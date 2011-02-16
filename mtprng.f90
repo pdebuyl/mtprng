@@ -136,9 +136,8 @@ contains
     if (short_var) then
        write(*,*) 'mtprng_f95> Version/date : ', trim(adjustl(mtprng_f95_version_date))
     else
-       write(*,*) 'mtprng_f95> Library mtprng_f95: Dynamic Creator Mersenne Twister'
-       write(*,*) 'mtprng_f95> (C) 2011 P. de Buyl, based on code by Mutsuo Saito,'
-       write(*,*) 'mtprng_f95> Takuji Nishimura and Scott Robert Ladd.'
+       write(*,*) 'mtprng_f95> Library mtprng_f95: Mersenne Twister 19937 in f95'
+       write(*,*) 'mtprng_f95> (C) 2011 P. de Buyl, based on code by Scott Robert Ladd.'
        write(*,*) 'mtprng_f95> Version/date : ', trim(adjustl(mtprng_f95_version_date))
        write(*,*) 'mtprng_f95> Git commit   : ', trim(mtprng_f95_commit)
        write(*,*) 'mtprng_f95> Built on     : ', trim(mtprng_f95_machine)
