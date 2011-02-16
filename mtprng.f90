@@ -238,7 +238,7 @@ contains
         r = state%mt(state%mti)
         state%mti = state%mti + 1
         
-        r = ieor(r,ishft(r,-11))
+        r = ieor(r,ishft(iand(4294967295_INT64,r),-11))
         r = iand(4294967295_INT64,ieor(r,iand(ishft(r, 7),TEMPERING_B)))
         r = iand(4294967295_INT64,ieor(r,iand(ishft(r,15),TEMPERING_C)))
         r = ieor(r,ishft(r,-18))
