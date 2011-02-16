@@ -1,5 +1,9 @@
 module mtprng
 !---------------------------------------------------------------------
+!
+!---------------------------------------------------------------------
+!
+!---------------------------------------------------------------------
 ! From the Algorithmic Conjurings of Scott Robert Ladd comes...
 !---------------------------------------------------------------------
 !
@@ -27,6 +31,10 @@ module mtprng
 !           Corrected erroneous unsigned bit manipulations
 !           Doubled resolution by using 64-bit math
 !           Added mtprng_rand64
+!
+!   2.1.0   16 February 2011
+!           Added a 32-bit mask to first r shift in mtprng_rand64
+!           Added a mtprng_info subroutine to print out versioning
 !
 !  ORIGINAL ALGORITHM COPYRIGHT
 !  ============================
@@ -94,7 +102,7 @@ module mtprng
     ! Everything is private unless explicitly made public
     private
 
-    public :: mtprng_state, &
+    public :: mtprng_state, mtprng_info, &
               mtprng_init, mtprng_init_by_array, &
               mtprng_rand64, mtprng_rand, mtprng_rand_range, &
               mtprng_rand_real1, mtprng_rand_real2, mtprng_rand_real3
@@ -112,6 +120,33 @@ module mtprng
     end type 
 
 contains
+
+
+  subroutine mtprng_info(short)
+    logical, intent(in), optional :: short
+    logical :: short_var
+    include 'version.h'
+
+    if (present(short)) then
+       short_var = .true.
+    else
+       short_var = .false.
+    end if
+
+    if (short_var) then
+       write(*,*) 'mtprng_f95> Version/date : ', trim(adjustl(mtprng_f95_version_date))
+    else
+       write(*,*) 'mtprng_f95> Library mtprng_f95: Dynamic Creator Mersenne Twister'
+       write(*,*) 'mtprng_f95> (C) 2011 P. de Buyl, based on code by Mutsuo Saito,'
+       write(*,*) 'mtprng_f95> Takuji Nishimura and Scott Robert Ladd.'
+       write(*,*) 'mtprng_f95> Version/date : ', trim(adjustl(mtprng_f95_version_date))
+       write(*,*) 'mtprng_f95> Git commit   : ', trim(mtprng_f95_commit)
+       write(*,*) 'mtprng_f95> Built on     : ', trim(mtprng_f95_machine)
+       write(*,*) 'mtprng_f95> Compiler     : ', trim(mtprng_f95_compiler)
+    end if
+
+  end subroutine mtprng_info
+
     !--------------------------------------------------------------------------
     !  Initializes the generator with "seed"
     subroutine mtprng_init(seed, state)
