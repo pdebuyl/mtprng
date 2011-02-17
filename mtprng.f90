@@ -125,7 +125,7 @@ contains
   subroutine mtprng_info(short)
     logical, intent(in), optional :: short
     logical :: short_var
-    include 'version.h'
+    include 'mtprng_version.h'
 
     if (present(short)) then
        short_var = .true.
