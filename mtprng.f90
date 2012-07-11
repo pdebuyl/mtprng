@@ -105,7 +105,8 @@ module mtprng
     public :: mtprng_state, mtprng_info, &
               mtprng_init, mtprng_init_by_array, &
               mtprng_rand64, mtprng_rand, mtprng_rand_range, &
-              mtprng_rand_real1, mtprng_rand_real2, mtprng_rand_real3
+              mtprng_rand_real1, mtprng_rand_real2, mtprng_rand_real3, &
+              mtprng_normal
 
     !------------------------------------------------------------------------------
     ! Constants
@@ -376,5 +377,33 @@ contains
         r = (real(mtprng_rand64(state),IEEE64) + 0.5_IEEE64) * factor
         
     end function mtprng_rand_real3
+
+    function mtprng_normal(state) result(r)
+      type(mtprng_state), intent(inout) :: state
+
+      real(IEEE64) :: r
+      real(IEEE64) :: u1, u2, radius, theta
+      real(IEEE64), save :: other
+      logical, save :: oneleft=.false.
+      logical :: found
+
+      if (oneleft) then
+         oneleft = .false.
+         r = other
+      else
+         found = .false.
+         do while (.not. found)
+            u1 = -1.0_IEEE64 + 2.0_IEEE64 * mtprng_rand_real1(state)
+            u2 = -1.0_IEEE64 + 2.0_IEEE64 * mtprng_rand_real1(state)
+            radius = (u1**2+u2**2)
+            if ( ( radius .lt. 1.0_IEEE64 ) .and. (radius .gt. 0.0_IEEE64) ) found = .true.
+         end do
+         other = u1 * sqrt( -2.0_IEEE64 * log(radius)/radius )
+         r = u2 * sqrt( -2.0_IEEE64 * log(radius)/radius )
+
+         oneleft = .true.
+      end if
+
+    end function mtprng_normal
 
 end module mtprng
